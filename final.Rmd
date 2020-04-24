@@ -118,4 +118,27 @@ random_sample <- function(dataset, n) {
 random_sample(primary, 10)
 ``` 
 
+# Loops or Control Flow
 
+This while loop finds the amount of rows in primary that are in Alabama until it moves on to another state (there are more rows in the state of Alabama later). 
+
+```{r}
+row <- 1
+while (primary[row, "state"] == "Alabama") {
+  row <- row + 1
+}
+row
+  
+``` 
+
+This for loop finds the amount of people that have voted for a non democrat or republican candidate
+
+```{r}
+n <- 0
+for (x in 1:nrow(primary)) {
+  if (primary[x, "candidate"] == "Other") {
+    n <- n + 1
+  }
+}
+n
+``` 
