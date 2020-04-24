@@ -343,10 +343,40 @@ secondary &lt;- ZipDemography</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<div id="data-wrangling" class="section level3">
+<h3>Data Wrangling</h3>
+</div>
+</div>
+<div id="general-data-wrangling" class="section level1">
+<h1>General Data Wrangling</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBmaW5kIHRoZSB0b3RhbCBudW1iZXIgb2YgY291bnRpZXMgdGhhdCB2b3RlZCBkZW1vY3JhdFxucGFydHkgPC0gcHJpbWFyeSAlPiVcbiAgZmlsdGVyKHBhcnR5ID09IFwiZGVtb2NyYXRcIikgJT4lXG4gIHN1bW1hcml6ZSh0b3RhbF9kZW1vY3JhdHMgPSBuKCkpXG5wYXJ0eVxuXG4jIGZpbmQgdGhlIHRvdGFsIG51bWJlciBvZiBjb3VudGllcyB0aGF0IHZvdGVkIHJlcHVibGljYW5cbnBhcnR5IDwtIHByaW1hcnkgJT4lXG4gIGZpbHRlcihwYXJ0eSA9PSBcInJlcHVibGljYW5cIikgJT4lXG4gIHN1bW1hcml6ZSh0b3RhbF9yZXB1YmxpY2FucyA9IG4oKSlcbnBhcnR5XG5gYGAifQ== -->
+<pre class="r"><code># find the total number of counties that voted democrat
+party &lt;- primary %&gt;%
+  filter(party == &quot;democrat&quot;) %&gt;%
+  summarize(total_democrats = n())
+party
+
+# find the total number of counties that voted republican
+party &lt;- primary %&gt;%
+  filter(party == &quot;republican&quot;) %&gt;%
+  summarize(total_republicans = n())
+party</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="join-operation" class="section level1">
+<h1>Join Operation</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiZmluYWwiCmF1dGhvcjogIk1hbmlrIE11a2hlcmplZSIKZHVlIGRhdGU6ICI0LzI1LzMwMzAiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCmBgYHtyfQojaW1wb3J0IGxpYnJhcmllcyB0byBtYWtlIHRoZSByZXN0IG9mIHRoZSBjb2RlIHdvcmsKbGlicmFyeShEYXRhQ29tcHV0aW5nKQpgYGAKCiMjIyBEYXRhIEFjY2VzcwoKIyBJbXBvcnQgdGhlIGRhdGEKYGBge3J9CnByaW1hcnkgPC0gcmVhZC5jc3YoZmlsZSA9ICJjb3VudHlwcmVzXzIwMDAtMjAxNi5jc3YiKQpzZWNvbmRhcnkgPC0gWmlwRGVtb2dyYXBoeQpgYGAKCiMgSW5zcGVjdCB0aGUgZGF0YQpgYGB7cn0KaGVhZChwcmltYXJ5KQpzdHIocHJpbWFyeSkKaGVhZChzZWNvbmRhcnkpCnN0cihzZWNvbmRhcnkpCmBgYAoKCgoKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiZmluYWwiCmF1dGhvcjogIk1hbmlrIE11a2hlcmplZSIKZHVlIGRhdGU6ICI0LzI1LzMwMzAiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCmBgYHtyfQojaW1wb3J0IGxpYnJhcmllcyB0byBtYWtlIHRoZSByZXN0IG9mIHRoZSBjb2RlIHdvcmsKbGlicmFyeShEYXRhQ29tcHV0aW5nKQpgYGAKCiMjIyBEYXRhIEFjY2VzcwoKIyBJbXBvcnQgdGhlIGRhdGEKYGBge3J9CnByaW1hcnkgPC0gcmVhZC5jc3YoZmlsZSA9ICJjb3VudHlwcmVzXzIwMDAtMjAxNi5jc3YiKQpzZWNvbmRhcnkgPC0gWmlwRGVtb2dyYXBoeQpgYGAKCiMgSW5zcGVjdCB0aGUgZGF0YQpgYGB7cn0KaGVhZChwcmltYXJ5KQpzdHIocHJpbWFyeSkKaGVhZChzZWNvbmRhcnkpCnN0cihzZWNvbmRhcnkpCmBgYAoKCiMjIyBEYXRhIFdyYW5nbGluZwoKIyBHZW5lcmFsIERhdGEgV3JhbmdsaW5nCgpgYGB7cn0KIyBmaW5kIHRoZSB0b3RhbCBudW1iZXIgb2YgY291bnRpZXMgdGhhdCB2b3RlZCBkZW1vY3JhdApwYXJ0eSA8LSBwcmltYXJ5ICU+JQogIGZpbHRlcihwYXJ0eSA9PSAiZGVtb2NyYXQiKSAlPiUKICBzdW1tYXJpemUodG90YWxfZGVtb2NyYXRzID0gbigpKQpwYXJ0eQoKIyBmaW5kIHRoZSB0b3RhbCBudW1iZXIgb2YgY291bnRpZXMgdGhhdCB2b3RlZCByZXB1YmxpY2FuCnBhcnR5IDwtIHByaW1hcnkgJT4lCiAgZmlsdGVyKHBhcnR5ID09ICJyZXB1YmxpY2FuIikgJT4lCiAgc3VtbWFyaXplKHRvdGFsX3JlcHVibGljYW5zID0gbigpKQpwYXJ0eQpgYGAKCiMgSm9pbiBPcGVyYXRpb24KCmBgYHtyfQoKYGBgCgoKCgo=</div>
 
 
 

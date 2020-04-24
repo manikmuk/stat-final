@@ -27,6 +27,30 @@ str(secondary)
 ```
 
 
+### Data Wrangling
+
+# General Data Wrangling
+
+```{r}
+# find the total number of counties that voted democrat
+party <- primary %>%
+  filter(party == "democrat") %>%
+  summarize(total_democrats = n())
+party
+
+# find the total number of counties that voted republican
+party <- primary %>%
+  filter(party == "republican") %>%
+  summarize(total_republicans = n())
+party
+```
+
+# Join Operation
+
+```{r}
+
+```
+
 
 
 
