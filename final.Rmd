@@ -72,6 +72,15 @@ combined <- left_join(primary, combined)
 head(combined)
 ```
 
+# Regular Expressions
 
+This regular expression extracts the last name (if applicable) from the candidate name, as many people refer to presidents by just their last name.
+
+```{r}
+last_names <- primary %>%
+  select(candidate) %>%
+  extractMatches("([^ ]+$)", candidate)
+head(last_names)
+```
 
 
