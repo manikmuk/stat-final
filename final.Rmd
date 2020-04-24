@@ -10,12 +10,19 @@ output: html_notebook
 library(DataComputing)
 ```
 
+### Research Question
+
+# Do county election results correlate to the percentage of the population that is not white?
+
 ### Data Access
+
+The link to the third source is required to be linked to according to the download website: https://simplemaps.com/data/us-zips
 
 # Import the data
 ```{r}
 primary <- read.csv(file = "countypres_2000-2016.csv")
-secondary <- ZipDemography
+secondary <- ZipDemography[, c("Totalpopulation", "White", "ZIP")]
+third <- read.csv(file = "uszips.csv")[, c("zip", "county_name")]
 ```
 
 # Inspect the data
@@ -24,6 +31,8 @@ head(primary)
 str(primary)
 head(secondary)
 str(secondary)
+head(third)
+str(third)
 ```
 
 
@@ -32,23 +41,35 @@ str(secondary)
 # General Data Wrangling
 
 ```{r}
-# find the total number of counties that voted democrat
-party <- primary %>%
+# find the total number of votes for democrats ever
+democrat <- primary %>%
   filter(party == "democrat") %>%
-  summarize(total_democrats = n())
-party
+  summarize(total_democrats = sum(totalvotes))
+democrat
 
-# find the total number of counties that voted republican
-party <- primary %>%
+# find the total number of votes for republicans
+republican <- primary %>%
   filter(party == "republican") %>%
-  summarize(total_republicans = n())
-party
+  summarize(total_republicans = sum(totalvotes))
+republican
 ```
 
 # Join Operation
 
 ```{r}
+third[, "county_name"] <- as.character(third[, "county_name"])
+primary[, "county"] <- as.character(primary[, "county"])
+secondary[, "ZIP"] <- as.numeric(secondary[, "ZIP"])
 
+names(secondary)[3] <- "zip"
+names(third)[2] <- "county"
+```
+
+
+```{r}
+combined <- left_join(secondary, third)
+combined <- left_join(primary, combined)
+head(combined)
 ```
 
 
