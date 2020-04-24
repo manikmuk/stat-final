@@ -5,8 +5,28 @@ due date: "4/25/3030"
 output: html_notebook
 ---
 
+```{r}
+#import libraries to make the rest of the code work
+library(DataComputing)
+```
+
 ### Data Access
 
+# Import the data
 ```{r}
-
+primary <- read.csv(file = "countypres_2000-2016.csv")
+secondary <- ZipDemography
 ```
+
+# Inspect the data
+```{r}
+head(primary)
+str(primary)
+head(secondary)
+str(secondary)
+```
+
+
+
+
+
