@@ -83,4 +83,39 @@ last_names <- primary %>%
 head(last_names)
 ```
 
+This filters out counties that have "son", "ger", or "gua" in their name
+
+```{r}
+patterns <- third %>%
+  filter(grepl("son|ger|gua", county, ignore.case = TRUE))
+head(patterns)
+```
+
+# User Defined Functions
+
+this function will print popular if the input over 10,000 votes and not popular if the input is not.  This could be used in the context of votes
+
+```{r}
+popular <- function(votes) {
+  if (votes > 10000) {
+    status <- "popular"
+  } else {
+      status <- "not popular"
+    }
+  status
+}
+```
+
+this function will generate a random sample of size n from any dataset so so long as the sample size isn't greater than the size of the dataset.
+
+```{r}
+random_sample <- function(dataset, n) {
+  total <- 1:nrow(dataset)
+  random <- sample(total, size = n, replace = FALSE)
+  dataset[random, ]
+}
+
+random_sample(primary, 10)
+``` 
+
 
