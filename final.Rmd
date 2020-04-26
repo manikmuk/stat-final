@@ -16,7 +16,7 @@ library(DataComputing)
 
 ### Data Access
 
-The link to the third source is required to be linked to according to the download website: https://simplemaps.com/data/us-zips
+The link to the third source is required to be linked to according to the download website: https://simplemaps.com/data/us-zips.  The data below is importing the data into the R notebook.  We then inspect the data by looking at the first 6 values of each of the sources and also looking at some of the variable names and types by using the str() function.
 
 # Import the data
 ```{r}
@@ -41,13 +41,13 @@ str(third)
 # General Data Wrangling
 
 ```{r}
-# find the total number of votes for democrats ever
+# This finds the total number of votes for democrats ever, which will be useful in the future to see if the votes are already biased heavily toward a candidate in the general population before comparing it by the white and non white population.
 democrat <- primary %>%
   filter(party == "democrat") %>%
   summarize(total_democrats = sum(totalvotes))
 democrat
 
-# find the total number of votes for republicans
+# This finds the total number of votes for republicans, which will be useful to compare to the amount of votes that the democrats receive.
 republican <- primary %>%
   filter(party == "republican") %>%
   summarize(total_republicans = sum(totalvotes))
@@ -65,7 +65,7 @@ names(secondary)[3] <- "zip"
 names(third)[2] <- "county"
 ```
 
-
+This combined table is joining together the primary and secondary datasets so we can see the white population and total population combined with the voting outcome for each county, which is integral to see the relationship between the voting outcome and the percentage of population that is white. 
 ```{r}
 combined <- left_join(secondary, third)
 combined <- left_join(primary, combined)
@@ -83,7 +83,7 @@ last_names <- primary %>%
 head(last_names)
 ```
 
-This filters out counties that have "son", "ger", or "gua" in their name
+This filters counties that have "son", "ger", or "gua" in their name so that only those counties appear in the table.
 
 ```{r}
 patterns <- third %>%
@@ -93,7 +93,7 @@ head(patterns)
 
 # User Defined Functions
 
-this function will print popular if the input over 10,000 votes and not popular if the input is not.  This could be used in the context of votes
+this function will print popular if the input over 10,000 votes and not popular if the input is not.  This could be used in the context of votes to see if the candidate is popular or not within the county.  Even though that candidate may not have won, they could still be popular.
 
 ```{r}
 popular <- function(votes) {
@@ -106,7 +106,7 @@ popular <- function(votes) {
 }
 ```
 
-this function will generate a random sample of size n from any dataset so so long as the sample size isn't greater than the size of the dataset.
+this function will generate a random sample of size n from any dataset so so long as the sample size isn't greater than the size of the dataset.  This is useful for machine learning with large datasets, as the algorithm may not be able to handle the whole dataset at one time.
 
 ```{r}
 random_sample <- function(dataset, n) {
@@ -120,7 +120,7 @@ random_sample(primary, 10)
 
 # Loops or Control Flow
 
-This while loop finds the amount of rows in primary that are in Alabama until it moves on to another state (there are more rows in the state of Alabama later). 
+This while loop finds the amount of rows in the primary dataset that are in Alabama until it moves on to another state (there are more rows in the state of Alabama later). 
 
 ```{r}
 row <- 1
@@ -131,7 +131,7 @@ row
   
 ``` 
 
-This for loop finds the amount of people that have voted for a non democrat or republican candidate
+This for loop finds the amount of people that have voted for a non democrat or republican candidate, which is useful in case that was a significant amount of counties that voted for them.
 
 ```{r}
 n <- 0
@@ -168,16 +168,17 @@ winner_white <- left_join(winner, white_prop, by = c("state","county")) %>%
 
 ``` 
 
-This shows a bar plot of the the the number of counties that chose a specific party versus the percentage of white people living in that county.
+This shows a bar plot of the the the number of counties that chose a specific party versus the percentage of white people living in that county.  As seen in the plot, republicans mostly won in counties that were mostly white while democrats had more of an advantage in non-white dominated counties.
 
 ```{r}
 
-ggplot(data=winner_white,aes(x=prop,y=n ,fill=party)) + geom_bar(stat='identity',position='dodge', width=.9) +
+ggplot(data=winner_white,aes(x=prop,y=n ,fill=party)) + 
+  geom_bar(stat='identity',position='dodge', width=.9) +
   scale_fill_manual("legend", values = c("democrat" = "blue", "republican" = "red"))
 
 ``` 
 
-This shows the percentage of counties that voted democrat and republican given the percentage of white people in the county.
+This shows the percentage of counties that voted democrat and republican given the percentage of white people in the county.  This shows us that in counties where the white population is less than or equal to 20% they all voted democrat for the election.  And as the white population increased, the percentage of counties that voted republicans decreased.
 
 ```{r}
 percentages <- left_join(winner, white_prop, by = c("state", "county")) %>%
@@ -194,7 +195,7 @@ ggplot(data=percentages,aes(x=prop,y=percent)) +
 
 ``` 
 
-This shows the overall distribution of the percentage of white people in counties in the US.
+This shows the overall distribution of the percentage of white people in counties in the US.  This shows that most counties have a high population of white people, with the median being at around 80% white.
 
 ```{r}
 white_prop <- white_prop %>%
@@ -206,6 +207,7 @@ ggplot(white_prop, aes(x=prop)) +
 
 ``` 
 
+This is a decision tree to predict the party that would win for each county, given the percentage of white people in that county and given the total population, and the amount of votes.
 
 ```{r fig.width=10}
 library(party)
