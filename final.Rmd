@@ -161,20 +161,47 @@ white_prop <- combined %>%
   group_by(state, county) %>%
   summarise(Totalpopulation = sum(Totalpopulation, na.rm = TRUE), White = sum(White, na.rm = TRUE))
 
-winner <- left_join(winner, white_prop) %>%
+winner_white <- left_join(winner, white_prop, by = c("state","county")) %>%
   mutate(prop = White/Totalpopulation) %>%
-  group_by(party, , prop=cut(prop, breaks= seq(0, 1, by = 0.1))) %>% 
+  group_by(party, prop=cut(prop, breaks= seq(0, 1, by = 0.1))) %>% 
   summarise(n= n())
+
 ``` 
 
 This shows a bar plot of the the the number of counties that chose a specific party versus the percentage of white people living in that county.
 
 ```{r}
 
-ggplot(data=winner,aes(x=prop,y=n ,fill=party)) + geom_bar(stat='identity',position='dodge', width=.9)
+ggplot(data=winner_white,aes(x=prop,y=n ,fill=party)) + geom_bar(stat='identity',position='dodge', width=.9) +
+  scale_fill_manual("legend", values = c("democrat" = "blue", "republican" = "red"))
 
 ``` 
 
+This shows the percentage of counties that voted democrat and republican given the percentage of white people in the county.
 
+```{r}
+percentages <- left_join(winner, white_prop, by = c("state", "county")) %>%
+  mutate(prop = White/Totalpopulation) %>%
+  group_by(party, prop=cut(prop, breaks= seq(0, 1, by = 0.1))) %>% 
+  summarise(n= n()) %>%
+  group_by(prop) %>%
+  mutate(percent = n/sum(n))
+  
 
+ggplot(data=percentages,aes(x=prop,y=percent)) + 
+  geom_point(aes(color=party)) +
+  scale_color_manual(values=c('#0000FF','#FF0000'))
 
+``` 
+
+This shows the overall distribution of the percentage of white people in counties in the US.
+
+```{r}
+white_prop <- white_prop %>%
+  mutate(prop = White/Totalpopulation)
+  
+
+ggplot(white_prop, aes(x=prop)) +
+  geom_boxplot()
+
+``` 
