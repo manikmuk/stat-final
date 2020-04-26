@@ -146,7 +146,7 @@ n
 
 ### Data Visualization
 
-This is data wrangling for the next plot
+This is data wrangling for the next plot.  All of the following plots are for the year 2000.
 
 ```{r}
 
@@ -205,3 +205,16 @@ ggplot(white_prop, aes(x=prop)) +
   geom_boxplot()
 
 ``` 
+
+
+```{r fig.width=10}
+library(party)
+
+combined2 <- left_join(winner, white_prop, by = c("state","county")) %>%
+  mutate(prop = White/Totalpopulation)
+
+winner_predict <- ctree(party ~ prop + candidatevotes + Totalpopulation, data = combined2)
+plot(winner_predict)
+
+``` 
+
