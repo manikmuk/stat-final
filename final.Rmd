@@ -142,3 +142,39 @@ for (x in 1:nrow(primary)) {
 }
 n
 ``` 
+
+
+### Data Visualization
+
+This is data wrangling for the next plot
+
+```{r}
+
+winner <- primary %>%
+  filter(year == 2000) %>%
+  distinct(state, county, party, candidatevotes) %>%
+  group_by(state, county) %>%
+  filter(candidatevotes == max(candidatevotes))
+
+white_prop <- combined %>%
+  filter(year == 2000) %>%
+  group_by(state, county) %>%
+  summarise(Totalpopulation = sum(Totalpopulation, na.rm = TRUE), White = sum(White, na.rm = TRUE))
+
+winner <- left_join(winner, white_prop) %>%
+  mutate(prop = White/Totalpopulation) %>%
+  group_by(party, , prop=cut(prop, breaks= seq(0, 1, by = 0.1))) %>% 
+  summarise(n= n())
+``` 
+
+This shows a bar plot of the the the number of counties that chose a specific party versus the percentage of white people living in that county.
+
+```{r}
+
+ggplot(data=winner,aes(x=prop,y=n ,fill=party)) + geom_bar(stat='identity',position='dodge', width=.9)
+
+``` 
+
+
+
+
